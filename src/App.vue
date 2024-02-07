@@ -1,17 +1,44 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>Hello Timer Project</h1>
+  <button @click="start" :disabled="isPlaying">Play</button>
+  <br />
+  <ResultsOfTime v-if="showTime" :time="time" />
+  <BlockOne v-if="isPlaying" :delay="delay" @click="clickOnBlock" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BlockOne from "./components/Block.vue";
+import ResultsOfTime from "./components/Results.vue";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: { BlockOne, ResultsOfTime },
+  data() {
+    return {
+      isPlaying: false,
+      delay: null,
+      intervalId: null,
+      time: 0,
+      showTime: false,
+    };
+  },
+  methods: {
+    start() {
+      this.isPlaying = true;
+      this.delay = Math.random();
+      this.intervalId = setInterval(() => {
+        this.time++;
+      }, 1000);
+      this.showTime = false;
+      this.time = 0;
+    },
+    clickOnBlock() {
+      clearInterval(this.intervalId);
+      this.showTime = true;
+      this.isPlaying = false;
+    },
+  },
+};
 </script>
 
 <style>
